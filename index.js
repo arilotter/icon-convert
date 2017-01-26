@@ -30,14 +30,12 @@ const invalidTypes = program.types.filter(type => !allowedTypes.includes(type))
 if (invalidTypes.length != 0) {
   console.error(`Invalid conversion types: ${invalidTypes.map(type => `'${type}'`).join(' ')}.`);
   console.error(`Valid types are one or more of: ${allowedTypes.join(' ')}`)
-  program.outputHelp();
   return process.exitCode = 1;
 }
 
 // Check for invalid file arguments
 if (program.args.length != 1) {
   console.error('Wrong number of file arguments.');
-  program.outputHelp();
   return process.exitCode = 1;
 }
 
