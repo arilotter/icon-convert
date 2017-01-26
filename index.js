@@ -7,33 +7,23 @@ const fetch = require('node-fetch');
 const program = require('commander');
 const mkdir = require('mkdir-promise');
 
-const allowedTypes = ['ico', 'icns', 'hqx', 'png'];
-const allowedPNGSizes = [16, 24, 32, 48, 64, 96, 128, 256, 512]
+const allowedPNGSizes = [16, 24, 32, 48, 64, 96, 128, 256, 512];
+const allowedTypes = ['ico', 'icns', 'hqx', ...allowedPNGSizes.map(size => `png${size}`)];
 
 program
   .usage('[options] <file> ')
   .option('-t, --types <items>', `the output file types. one or more of: ${allowedTypes.join(' ')}. defaults to ico,icns`, items => items.split(','), ['ico', 'icns'])
   .option('-o, --out [value]', 'the output directory')
-  .option('-p, --pngsizes <items>', `the dimensions to render for the 'png' type. one or more of: ${allowedTypes.join(' ')}. defaults to 32`, items => items.split(','), [ 32 ])
   .option('-f, --filename [value]', 'the output filename prefix. defaults to the name of the input file without an extension')
   .on('--help', () => {
     console.log(`Examples:
-      $ icon-convert --t png --p 32,512 --f BrandIcon icon.svg # creates files: ./BrandIcon_32x32.png, ./BrandIcon_512x512.png
-      $ icon-convert --types icns,hqx --out icons NiceIcon.svg # creates files: icons/NiceIcons.ics, icons/NiceIcon.svg
+      $ icon-convert --t png32,png512 --f BrandIcon icon.svg # creates files: ./BrandIcon_32x32.png, ./BrandIcon_512x512.png
+      $ icon-convert --types icns,hqx --out icons NiceIcon.png # creates files: icons/NiceIcons.ics, icons/NiceIcon.svg
     `);
   })
   .parse(process.argv);
 
 const outputDirectory = path.resolve(program.out || '.');
-
-// Check for invalid png sizes
-const invalidPNGSizes = program.pngsizes.filter(size => !allowedPNGSizes.includes(size));
-if (invalidPNGSizes.length != 0) {
-  console.error(`Invalid PNG sizes: ${invalidPNGSizes.map(size => `'${size}'`).join(' ')}.`);
-  console.error(`Valid sizes are one or more of: ${allowedPNGSizes.join(' ')}`)
-  program.outputHelp();
-  return process.exitCode = 1;
-}
 
 // Check for invalid conversion types
 const invalidTypes = program.types.filter(type => !allowedTypes.includes(type))
@@ -73,7 +63,12 @@ mkdir(outputDirectory)
   .then(response => response.json())
   .then(json => json.files.filter(file => {
       // Icons are square, so only checking width is OK
-      return program.types.includes(file.format) && (file.format !== 'png' || program.pngsizes.includes(file.imgsizes[0].width))
+      return program.types.includes(file.format) || (file.format === 'png' && (
+        program.types
+          .filter(type => type.startsWith('png'))
+          .map(type => parseInt(type.replace('png','')))
+          .includes(file.imgsizes[0].width)
+      ))
     }).map(file => {
       fetch(file.download.uri).then(response => {
         response.body.pipe(fs.createWriteStream(path.resolve(outputDirectory, file.filename.replace(json.id, outputFilePrefix))))
