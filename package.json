@@ -1,0 +1,36 @@
+{
+  "name": "icon-convert",
+  "version": "1.0.0",
+  "description": "Converts icons from SVG or raster formats to platform-specific ico, icns, and multiple-sized PNGs. Uses the iconverticons API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "icon-convert": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arilotter/icon-converter.git"
+  },
+  "keywords": [
+    "icon",
+    "convert",
+    "converter",
+    "svg",
+    "ico",
+    "icns"
+  ],
+  "author": "Ari Lotter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arilotter/icon-converter/issues"
+  },
+  "homepage": "https://github.com/arilotter/icon-converter#readme",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "form-data": "^2.1.2",
+    "mkdir-promise": "^1.0.0",
+    "node-fetch": "^1.6.3"
+  }
+}
