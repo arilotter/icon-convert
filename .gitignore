@@ -2,3 +2,5 @@
 icons/
 icon.svg
 node_modules/
+npm-debug.log
+
