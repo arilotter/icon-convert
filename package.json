@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arilotter/icon-converter.git"
+    "url": "git+https://github.com/arilotter/icon-convert.git"
   },
   "keywords": [
     "icon",
@@ -24,9 +24,9 @@
   "author": "Ari Lotter",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/arilotter/icon-converter/issues"
+    "url": "https://github.com/arilotter/icon-convert/issues"
   },
-  "homepage": "https://github.com/arilotter/icon-converter#readme",
+  "homepage": "https://github.com/arilotter/icon-convert#readme",
   "dependencies": {
     "commander": "^2.9.0",
     "form-data": "^2.1.2",
