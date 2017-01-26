@@ -36,7 +36,7 @@ if (invalidTypes.length != 0) {
 
 // Check for invalid file arguments
 if (program.args.length != 1) {
-  console.error('More than one file provided.');
+  console.error('Wrong number of file arguments.');
   program.outputHelp();
   return process.exitCode = 1;
 }
